@@ -11,3 +11,10 @@
 .container-2 {
     width: 500px;
 }
+
+button{
+    height: 25px;
+    width: 60px;
+    background-color: blue;
+    color: white;
+}
