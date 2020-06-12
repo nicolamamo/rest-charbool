@@ -1,18 +1,26 @@
+var chiavi= []
+ var valori =[];
+ var chiavi_secondoGr= [];
+ var valori_secondoGr = [];
 $(document).ready(function(){
+    chiamata_ajax();
+    function chiamata_ajax(){
+        $.ajax({
+            'url':'http://157.230.17.132:4012/sales',
+            'method': 'GET',
+            'success':function(data){
+                totale_mese(data);//quantita vendite per mese
+                primo_grafico(data);//
+                totale_singolo_venditore(data);
+                secondo_grafico(data)
+            },
+            'error':function(){
+                console.log('errore');
+            }
+        });
+
+    }
 // chiamata ajax
-    $.ajax({
-        'url':'http://157.230.17.132:4012/sales',
-        'method': 'GET',
-        'success':function(data){
-            totale_mese(data);//quantita vendite per mese
-            primo_grafico(data);//
-            totale_singolo_venditore(data);
-            secondo_grafico(data)
-        },
-        'error':function(){
-            console.log('errore');
-        }
-    });
 
 //funzione per dare a ogni mese il totle di quanità venduta
 function totale_mese(data){
@@ -48,7 +56,7 @@ function totale_mese(data){
     }
  // prendo chiavi e valori da mettere nel primo_grafico
  chiavi= Object.keys(spese_mese);
- valori = Object.values(spese_mese);
+  valori = Object.values(spese_mese);
 
 }
 
@@ -117,19 +125,19 @@ function totale_singolo_venditore(data){
         var oggetto =data[i];
         var vendita = parseInt(oggetto.amount);
         var singolo_venditore = oggetto.salesman;
-        if (venditore.hasOwnProperty(vendita)) {
+        if (venditore.hasOwnProperty(singolo_venditore)){
             venditore[singolo_venditore] += vendita
 
         }
         else {
-            singolo_venditore[venditore] = vendita
+            venditore[singolo_venditore] = vendita
         }
 
     }
 
     // prendo chiavi e valori da mettere nel secondo grafico
     chiavi_secondoGr= Object.keys(venditore);
-    valori = Object.values(venditore);
+    valori_secondoGr = Object.values(venditore);
 
 }
 
@@ -143,7 +151,7 @@ function secondo_grafico(){
                 labels: chiavi_secondoGr,
                 datasets: [{
                     label: 'singolo venditore',
-                    data: valori,
+                    data: valori_secondoGr,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                    'rgba(54, 162, 235, 0.2)',
