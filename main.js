@@ -110,15 +110,15 @@ options: {
 };
 // quantita totale per ogni venditore
 function totale_singolo_venditore(data){
-    var singolo_venditore={};
+    var venditore={};
     var vendite =0
     //ciclo tutti gli elementi dell' array dato da ajax
     for (var i = 0; i < data.length; i++) {
         var oggetto =data[i];
         var vendita = parseInt(oggetto.amount);
-        var venditore = oggetto.salesman;
+        var singolo_venditore = oggetto.salesman;
         if (venditore.hasOwnProperty(vendita)) {
-            singolo_venditore[venditore] += vendita
+            venditore[singolo_venditore] += vendita
 
         }
         else {
@@ -128,8 +128,8 @@ function totale_singolo_venditore(data){
     }
 
     // prendo chiavi e valori da mettere nel secondo grafico
-    chiavi_gr2= Object.keys(totale_singolo_venditore);
-    valori_gr2 = Object.values(totale_singolo_venditore);
+    chiavi_secondoGr= Object.keys(venditore);
+    valori = Object.values(venditore);
 
 }
 
@@ -140,10 +140,10 @@ function secondo_grafico(){
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: chiavi_gr2,
+                labels: chiavi_secondoGr,
                 datasets: [{
                     label: 'singolo venditore',
-                    data: valori_gr2,
+                    data: valori,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                    'rgba(54, 162, 235, 0.2)',
@@ -158,7 +158,8 @@ function secondo_grafico(){
                         'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
 
                     ],
                     borderWidth: 1,
@@ -166,15 +167,7 @@ function secondo_grafico(){
             },
         });
 
-    options: {
-           scales: {
-               yAxes: [{
-                   ticks: {
-                       beginAtZero: true
-                   }
-               }]
-           }
-       }
+
 
     };
 
