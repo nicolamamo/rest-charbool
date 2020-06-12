@@ -3,6 +3,38 @@ var chiavi= []
  var chiavi_secondoGr= [];
  var valori_secondoGr = [];
 $(document).ready(function(){
+
+$('#salva-vendita').click(function(){
+  var venditore_scelto = $('#scelta-venditore').val();
+  var mese_scelto = $('#scelta-mese').val();
+  var importo_scelto = $('#importo').val();
+  var data_moment = moment(mese_scelto, 'MMMM');
+  var mese = data_moment.format('MM');
+  var data_vendita ='01/'+mese+'2017';
+$.ajax({
+    'url':'http://157.230.17.132:4012/sales',
+    'method': 'POST',
+    'data':{
+        salesman: venditore_scelto,
+        date: data_vendita,
+        amount:importo_scelto,
+    },
+    'success':function(data){
+        chiamata_ajax()
+    },
+
+    'error':function() {
+        console.log('errore');
+    }
+})
+
+});
+
+
+
+
+
+
     chiamata_ajax();
     function chiamata_ajax(){
         $.ajax({
@@ -180,7 +212,7 @@ function secondo_grafico(){
     };
 
 
-
+//mettendo sopra la chiamata ajax get una chiama ajax post
 
 
 
