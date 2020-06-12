@@ -4,13 +4,15 @@ $(document).ready(function(){
         'url':'http://157.230.17.132:4012/sales',
         'method': 'GET',
         'success':function(data){
-            totale_mese(data); //avvia funzione per sommare gli amount
-            primo_grafico(data);//inserisci
+            totale_mese(data);//quantita vendite per mese
+            primo_grafico(data);//
+            totale_singolo_venditore(data);
+            secondo_grafico(data)
         },
         'error':function(){
             console.log('errore');
         }
-    })
+    });
 
 //funzione per dare a ogni mese il totle di quanità venduta
 function totale_mese(data){
@@ -51,7 +53,7 @@ function totale_mese(data){
 }
 
 // funzione per inserire nel grafico
-function primo_grafico() {
+function primo_grafico(data) {
     var ctx = $('#myChart')[0].getContext('2d');
 
     var myChart = new Chart(ctx, {
@@ -94,7 +96,7 @@ function primo_grafico() {
             }]
         },
     });
-}
+
 options: {
        scales: {
            yAxes: [{
@@ -105,6 +107,76 @@ options: {
        }
    }
 
+};
+// quantita totale per ogni venditore
+function totale_singolo_venditore(data){
+    var singolo_venditore={};
+    var vendite =0
+    //ciclo tutti gli elementi dell' array dato da ajax
+    for (var i = 0; i < data.length; i++) {
+        var oggetto =data[i];
+        var vendita = parseInt(oggetto.amount);
+        var venditore = oggetto.salesman;
+        if (venditore.hasOwnProperty(vendita)) {
+            singolo_venditore[venditore] += vendita
+
+        }
+        else {
+            singolo_venditore[venditore] = vendita
+        }
+
+    }
+
+    // prendo chiavi e valori da mettere nel secondo grafico
+    chiavi_gr2= Object.keys(totale_singolo_venditore);
+    valori_gr2 = Object.values(totale_singolo_venditore);
+
+}
+
+function secondo_grafico(){
+
+        var ctx = $('#canvas2')[0].getContext('2d');
+
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: chiavi_gr2,
+                datasets: [{
+                    label: 'singolo venditore',
+                    data: valori_gr2,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                   'rgba(54, 162, 235, 0.2)',
+                   'rgba(255, 206, 86, 0.2)',
+                   'rgba(75, 192, 192, 0.2)'
+
+
+
+
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+        });
+
+    options: {
+           scales: {
+               yAxes: [{
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+
+    };
 
 
 
