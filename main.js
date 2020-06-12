@@ -94,6 +94,8 @@ function totale_mese(data){
 
 // funzione per inserire nel grafico
 function primo_grafico(data) {
+    $('.container').empty();
+    $('.container').append('<canvas id="myChart"></canvas>');
     var ctx = $('#myChart')[0].getContext('2d');
 
     var myChart = new Chart(ctx, {
@@ -174,7 +176,8 @@ function totale_singolo_venditore(data){
 }
 
 function secondo_grafico(){
-
+$('.container-2').empty();
+$('.container-2').append('<canvas id="canvas2" width="100" height="100"></canvas>');
         var ctx = $('#canvas2')[0].getContext('2d');
 
         var myChart = new Chart(ctx, {
